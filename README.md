@@ -6,4 +6,11 @@ Model United Nations, also known as Model UN or MUN, is an educational simulatio
 * Infinite number of club members.
 * - Will be updated -
 
+## Requirements
+* Web Host (Linux OS)
+* MySQL Database
+
+Note: cPanel (WHM) is recommended.
+
+## A Sincere Request
 This project is my IB Computer Science High Level Internal Assignment. I'd appreciate your feedback through "Issues".
