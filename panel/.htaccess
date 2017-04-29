@@ -1,0 +1,12 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+RewriteRule ^registration/?$ registration/registration.php
+
+ErrorDocument 404 /404.html
+ErrorDocument 401 /401.html
