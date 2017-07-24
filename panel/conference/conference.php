@@ -41,13 +41,14 @@
         <? if($usrapplied) { ?>
         <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#reviewApp"> Review Application</button>
         You have applied this conference.<br><small>Please review your application to meet admission criteria and deadlines.</small>
-        <? } else { ?>
-        <form id="applyConf" action="conference.php" method="post" accept-charset="UTF-8">
+        <? } elseif($mmssettings["maxinapp"] > $numapplied) { ?>
+        <form id="applyConf" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
           <input type="hidden" name="type" value="applyConf" />
-          <input type="hidden" name="conference" value="<?= $localid ?>" />
           <button type="submit" id="applyConfButton" class="btn btn-success pull-right">Apply Now</button>
         </form>
-        <strong><?= $numapplied ?></strong> member(s) applied this conference.<br><small>Apply to receive recommendation letter from your MUN advisor.</small>
+        <strong><?= $numapplied ?>/<?= $mmssettings["maxinapp"] ?></strong> member(s) applied this conference.<br><small>Apply to receive recommendation letter from your MUN advisor.</small>
+        <? } else { ?>
+        <strong><?= $numapplied ?>/<?= $mmssettings["maxinapp"] ?></strong> member(s) applied this conference.<br><small>You cannot apply to this conference since the maximum number of applicants is reached.</small>
         <? } ?>
       </div>
       <? } ?>
@@ -116,8 +117,11 @@
               </ul>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Remove Application</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <form id="removeApp" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
+                <input type="hidden" name="type" value="removeApp" />
+                <button type="submit" class="btn btn-danger">Remove Application</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </form>
             </div>
           </div>
         </div>
@@ -141,6 +145,15 @@
 $(document).ready(function() {
     // bind 'myForm' and provide a simple callback function
     $('#applyConf').ajaxForm(function(data) {
+        if(data == "ok") {
+          location.reload();
+        }
+        else {
+          swal("Something went wrong!", "Please try again later.", "error");
+        }
+    });
+
+    $('#removeApp').ajaxForm(function(data) {
         if(data == "ok") {
           location.reload();
         }

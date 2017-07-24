@@ -12,6 +12,9 @@ include(__DIR__."/../scripts/database.php");
 // Local Session Handler
 include(__DIR__."/../scripts/session.php");
 
+// Local Session Handler
+include(__DIR__."/../scripts/settings.php");
+
 // Term Calculator
 include(__DIR__."/../scripts/calc_term.php");
 
