@@ -2,7 +2,7 @@
 $curmonth = date("m");
 $curyear = date("Y");
 
-if($curmonth >= 9) {
+if($curmonth >= 7) {
   define('CURTERM',$curyear."-".($curyear+1));
   define('PREVTERM',($curyear-1)."-".$curyear);
   define('GRADCLASS', $curyear+1);
