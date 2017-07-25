@@ -13,6 +13,7 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li class=""><a href="<?= URL_MAIN ?>dashboard">Dashboard</a></li>
+          <li class=""><a href="<?= URL_MAIN ?>conferences">Conferences</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
@@ -43,6 +44,7 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li class=""><a href="<?= URL_MAIN ?>dashboard">Dashboard</a></li>
+          <li class=""><a href="<?= URL_MAIN ?>applications">Indepentent Applications</a></li>
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Members <span class="caret"></span></a>

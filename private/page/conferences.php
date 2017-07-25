@@ -8,6 +8,10 @@ if(empty($locallist)) {
 else {
   foreach($locallist as $id => $data)
   {
+    $localapplications = DB::query("SELECT * FROM applications WHERE conference=%s AND removed=0",$data['id']);
+
+    $locallist[$id]["numapplications"] = count($localapplications);
+
     if($data["independent"])
     {
       $locallist[$id]["independent_text"] = "Independent";

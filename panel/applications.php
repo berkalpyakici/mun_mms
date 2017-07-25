@@ -1,7 +1,8 @@
 <? $memberonly = true; ?>
+<? $advisoronly = true; ?>
 <? include("include.php"); ?>
 <? include(PATH_PRIVATE."page/loader.php"); ?>
-<? include(PATH_PRIVATE."page/conferences.php"); ?>
+<? include(PATH_PRIVATE."page/applications.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" href="<?= URL_MAIN ?>favicon.ico">
-<title><?= TITLE ?>: Conferences</title>
+<title><?= TITLE ?>: Indepentent Applications</title>
 
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,10 +22,10 @@
   <div class="container">
   <? include(PATH_PRIVATE."page/navbar.php"); ?>
 
-    <h3>Conferences</h3>
+    <h3>Indepentent Applications</h3>
 
     <? if($localempty) { ?>
-      <div class="alert alert-danger">There are no upcoming conferences.</div>
+      <div class="alert alert-danger">There are no active independent applications.</div>
     <? } else { ?>
 
     <div class="panel panel-default">
@@ -33,26 +34,22 @@
           <thead>
             <tr>
               <th>Conferece</th>
-              <th>Host</th>
-              <th>Date</th>
-              <th>Duration</th>
-              <th>Location</th>
-              <th>Application</th>
+              <th>Applicant</th>
+              <th>Applied On</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <? foreach($locallist as $data) { ?>
             <tr>
-              <td><a href="conference/<?= $data["id"] ?>"><?= $data["name"] ?></a></td>
-              <td><?= $data["host"] ?></td>
-              <td><?= $data["date"] //date("d.m.Y",$data["date"]) ?></td>
-              <td><?= $data["duration"] ?> Days</td>
-              <td><?= $data["city"] ?>, <?= $data["country"] ?></td>
+              <td><a href="conference/<?= $data["conference"]['id'] ?>"><?= $data["conference"]['name'] ?></a></td>
+              <td><a href="member/<?= $data["applicant"]['id'] ?>"><?= $data["applicant"]['fullname'] ?></a></td>
+              <td><?= date("d.m.Y H:i:s",$data["time_applied"]) ?></td>
               <td>
-                <?= $data["independent_text"] ?>
-                <? if($data['independent']) { echo '('.$data['numapplications'].'/'.$mmssettings["maxinapp"].')'; } ?>
+                <? if(!$data['formreceived']) { ?>
+                  Legal Documents Pending
+                <? } ?>
               </td>
-            </tr>
             <? } ?>
           </tbody>
         </table>
