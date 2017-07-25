@@ -31,7 +31,7 @@
       <? if(IS_ADVISOR) {?>
       <div class="alert alert-warning">
         You are viewing this page as an advisor. Therefore, you will be able to change all information on this page.<br>
-        <a href="#" data-toggle="modal" data-target="#editConfInf">Edit Conference Information</a>
+        <a href="#" data-toggle="modal" data-target="#editConf">Edit Conference Information</a>
       </div>
       <? } ?>
 
@@ -81,6 +81,59 @@
           </div>
         </div>
       </div>
+
+      <? if(IS_ADVISOR) { ?>
+      <form id="formEditConf" action="conference.php?id=<?= $localmaster["id"] ?>" method="post" accept-charset="UTF-8">
+      <div class="modal fade" id="editConf" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Edit Conference Information</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Conference Name*</label>
+                <input type="text" name="name" class="form-control" placeholder="Conference Name" value="<?= $localmaster['name'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Date*</label>
+                <input id="date" type="text" name="date" class="form-control" placeholder="dd.mm.yyyy" value="<?= $localmaster['date'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Host School/Foundation*</label>
+                <input type="text" name="host" class="form-control" placeholder="Host Name" value="<?= $localmaster['host'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Days*</label>
+                <input type="number" name="days" min="1" max="10" class="form-control" placeholder="Days" value="<?= $localmaster['duration'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Country*</label>
+                <input type="text" name="country" class="form-control" placeholder="Country" value="<?= $localmaster['country'] ?>">
+              </div>
+              <div class="form-group">
+                <label>City*</label>
+                <input type="text" name="city" class="form-control" placeholder="City" value="<?= $localmaster['city'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Application Type*</label>
+                <select name="applicationtype" class="form-control">
+                  <option value="0" <? if(!$localmaster['independent']) { echo 'selected'; } ?>>Dependent Application</option>
+                  <option value="1" <? if($localmaster['independent']) { echo 'selected'; } ?>>Indepentent Application</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <input type="hidden" name="type" value="editConf">
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+      <? } ?>
 
       <div class="modal fade" id="reviewApp" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -140,10 +193,25 @@
 
 <script src="../js/jquery.form.min.js"></script>
 <script src="../js/sweetalert.min.js"></script>
+<script src="../js/jquery.maskedinput.min.js"></script>
 
 <script>
 $(document).ready(function() {
     // bind 'myForm' and provide a simple callback function
+
+    jQuery(function($){
+       $("#date").mask("99.99.9999",{placeholder:"dd.mm.yyyy"});
+    });
+
+    $('#formEditConf').ajaxForm(function(data) {
+        if(data == "ok") {
+          location.reload();
+        }
+        else {
+          swal("Something went wrong!", "Please try again later.", "error");
+        }
+    });
+
     $('#applyConf').ajaxForm(function(data) {
         if(data == "ok") {
           location.reload();

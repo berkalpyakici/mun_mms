@@ -46,4 +46,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         return;
       }
     }
+
+    if(IS_ADVISOR)
+    {
+      if($_POST["type"] == "editConf")
+      {
+        DB::update("conferences", array(
+          "name" => $_POST["name"],
+          "date" => $_POST["date"],
+          "host" => $_POST["host"],
+          "duration" => $_POST["days"],
+          "country" => $_POST["country"],
+          "city" => $_POST["city"],
+          "independent" => $_POST["applicationtype"]
+        ), 'id=%s', $localid);
+
+        echo "ok";
+        exit;
+        return;
+      }
+    }
   }
