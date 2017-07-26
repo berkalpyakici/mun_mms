@@ -52,18 +52,11 @@
         <? } ?>
       </div>
       <? } ?>
-
-      <div class="alert alert-info text-left">
-        Internal Deadlines
-        <br><small>Deadline for Internal Application: 23.05.2017</small>
-        <br><small>Deadline for Document Signatures: 23.05.2017</small>
-        <br><small>Deadline for Recommendation: 23.05.2017</small>
-      </div>
       <? } ?>
 
       <div class="jumbotron">
         <h2 style="margin-top: 15px; margin-bottom: 15px;"><?= $localmaster["name"] ?></h2>
-        <h4>Hosted by <?= $localmaster["host"] ?> in <?= $localmaster["city"] ?>, <?= $localmaster["country"] ?></h4>
+        <h4>Hosted by <kbd><?= $localmaster["host"] ?></kbd> in <kbd><?= $localmaster["city"] ?>, <?= $localmaster["country"] ?></kbd></h4>
 
         <hr>
 
@@ -77,9 +70,28 @@
           </div>
 
           <div class="col-lg-4 text-center">
-            <h4><strong>Application Type</strong><br><small><?  if($localmaster["independent"]) { echo "Independent Application"; } else { echo "Depentent Application"; } ?></small></h4>
+            <h4><strong>Application Type</strong><br><small><?  if($localmaster["independent"]) { echo "Independent Application"; } else { echo "Depentent Application"; } ?> <? if($localmaster['independent']) { echo '('.$numapplied.'/'.$mmssettings["maxinapp"].')'; } ?></small></h4>
           </div>
         </div>
+
+        <hr>
+
+        <? if($localmaster["independent"]) { ?>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">MMS Application Schedule</div>
+          <div class="panel-body">
+            This conference is listed as an independent conference, which means delegates wish to attend this conference should apply this conference internally through MMS. If you have not already, click on Apply Conference button on top of the page. Please note that indepentent conference applications are limited to <?= $mmssettings['maxinapp'] ?> applicants.
+          </div>
+
+          <!-- List group -->
+          <ul class="list-group">
+            <li class="list-group-item">Deadline for Application: <? if(!empty($localmaster['date_app'])) { echo $localmaster['date_app']; } else { echo '<span class="text-danger">No Date Set</span>'; } ?></li>
+            <li class="list-group-item">Deadline for Document Submission: <? if(!empty($localmaster['date_docs'])) { echo $localmaster['date_docs']; } else { echo '<span class="text-danger">No Date Set</span>'; } ?></li>
+            <li class="list-group-item">Deadline for Recommendations: <? if(!empty($localmaster['date_reco'])) { echo $localmaster['date_reco']; } else { echo '<span class="text-danger">No Date Set</span>'; } ?></li>
+          </ul>
+        </div>
+        <? } ?>
       </div>
 
       <? if(IS_ADVISOR) { ?>
@@ -123,6 +135,27 @@
                   <option value="1" <? if($localmaster['independent']) { echo 'selected'; } ?>>Indepentent Application</option>
                 </select>
               </div>
+
+              <? if($localmaster['independent']) { ?>
+              <hr>
+
+              <div class="form-group">
+                <label>Application Deadline</label>
+                <small>Leave empty if there is no deadline.</small>
+                <input id="date2" type="text" name="date_app" class="form-control" placeholder="dd.mm.yyyy" value="<?= $localmaster['date_app'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Document Submission Deadline</label>
+                <small>Leave empty if not required.</small>
+                <input id="date3" type="text" name="date_docs" class="form-control" placeholder="dd.mm.yyyy" value="<?= $localmaster['date_docs'] ?>">
+              </div>
+              <div class="form-group">
+                <label>Recommendation Deadline*</label>
+                <small>Leave empty if not required.</small>
+                <input id="date4" type="text" name="date_reco" class="form-control" placeholder="dd.mm.yyyy" value="<?= $localmaster['date_reco'] ?>">
+              </div>
+
+              <? } ?>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -200,7 +233,10 @@ $(document).ready(function() {
     // bind 'myForm' and provide a simple callback function
 
     jQuery(function($){
-       $("#date").mask("99.99.9999",{placeholder:"dd.mm.yyyy"});
+      $("#date").mask("99.99.9999",{placeholder:"dd.mm.yyyy"});
+      $("#date2").mask("99.99.9999",{placeholder:"dd.mm.yyyy"});
+      $("#date3").mask("99.99.9999",{placeholder:"dd.mm.yyyy"});
+      $("#date4").mask("99.99.9999",{placeholder:"dd.mm.yyyy"});
     });
 
     $('#formEditConf').ajaxForm(function(data) {

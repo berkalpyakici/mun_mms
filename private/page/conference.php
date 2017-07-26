@@ -61,6 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
           "independent" => $_POST["applicationtype"]
         ), 'id=%s', $localid);
 
+        if($localmaster['independent']) {
+          DB::update("conferences", array(
+            "date_reco" => $_POST["date_reco"],
+            "date_app" => $_POST["date_app"],
+            "date_docs" => $_POST["date_docs"]
+          ), 'id=%s', $localid);
+        }
+
         echo "ok";
         exit;
         return;
