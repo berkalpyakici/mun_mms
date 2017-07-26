@@ -1,5 +1,8 @@
 ![img](https://raw.githubusercontent.com/berkalpyakici/mun_mms/master/panel/uploads/logo/default.png)
 
+[![GitHub license](https://img.shields.io/badge/license-AGPL-blue.svg)](https://raw.githubusercontent.com/berkalpyakici/mun_mms/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/berkalpyakici/mun_mms.svg)](https://github.com/berkalpyakici/mun_mms/issues)
+
 # MUN Member Management System
 Model United Nations, also known as Model UN or MUN, is an educational simulation and/or academic competition in which students can learn about diplomacy, international relations, and the United Nations. MMS designed exclusively for K12 schools that offer MUN as an extracurricular activity.
 
