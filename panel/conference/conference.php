@@ -123,17 +123,18 @@
               Optional: Recommendation Letter
               <br><small>If this conference requires a recommendation letter, select an advisor.</small>
               <br><br>
-              <form class="row">
+              <form id="selectAdvisor" class="row" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
+                <input type="hidden" name="type" value="selectAdvisor" />
                 <div class="form-group col-sm-10">
-                  <select class="form-control">
-                    <option value="0">N/A</option>
+                  <select class="form-control" name="advisor" <? if($usrapplication["advisor_locked"]) { echo 'disabled'; }?>>
+                    <option value="0">N/A <? if($usrapplication["advisor_locked"]) { ?>(You cannot change your advisor because this setting has been altered by an advisor.)<? } ?></option>
                     <? foreach($advisors as $data) { ?>
-                    <option value="<?= $data['id'] ?>"><?= $data['fullname'] ?></option>
+                    <option value="<?= $data['id'] ?>" <? if($usrapplication['advisor'] == $data['id']) { echo 'selected'; }?>><?= $data['fullname'] ?> <? if($usrapplication["advisor_locked"]) { ?>(You cannot change your advisor because this setting has been altered by an advisor.)<? } ?></option>
                     <? } ?>
                   </select>
                 </div>
                 <div class="form-group col-sm-2 text-right">
-                  <button type="submit" class="btn btn-primary">Save & Notify Adv.</button>
+                  <button type="submit" class="btn btn-primary" <? if($usrapplication["advisor_locked"]) { echo 'disabled'; }?>>Save & Notify Adv.</button>
                 </div>
               </form>
             </li>
@@ -242,6 +243,15 @@ $(document).ready(function() {
     });
 
     $('#formEditConf').ajaxForm(function(data) {
+        if(data == "ok") {
+          location.reload();
+        }
+        else {
+          swal("Something went wrong!", "Please try again later.", "error");
+        }
+    });
+
+    $('#selectAdvisor').ajaxForm(function(data) {
         if(data == "ok") {
           location.reload();
         }

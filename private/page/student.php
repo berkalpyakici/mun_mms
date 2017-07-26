@@ -1,14 +1,14 @@
 <?
 $localid = $_GET["id"];
-$localmaster = DB::queryFirstRow("SELECT * FROM users WHERE id=%s AND removed=0",$localid);
+$localmaster = DB::queryFirstRow("SELECT * FROM users WHERE id=%s AND removed=0",$localid); // Retrieves user data from DB.
 
 if(empty($localmaster["id"])) {
-  $localempty = true;
+  $localempty = true; // Sets variable true if no result is found in DB.
 }
 
 if(IS_MEMBER and $localid != $session["user"]["id"] and !IS_LOCAL_ADVISOR)
 {
-  $localempty = true;
+  $localempty = true; // If the user type is not advisor and the logged in user is not on their own profile page, then sets variable true. This prevents other members from looking into other's profiles.
 }
 
 if($localmaster["type"] == "advisor")
@@ -25,22 +25,22 @@ if($localmaster["type"] == "member")
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    if(IS_ADVISOR)
+    if(IS_ADVISOR) // Limiting these functions to advisors only.
     {
       if($_POST["type"] == "AdvInf")
       {
         if(empty($_POST["fullname"]) or empty($_POST["email"]))
         {
-          echo "empty";
+          echo "empty"; // Returns 'empty', stating that a required field is left empty.
           exit;
           return;
         }
 
-        $existingaccount = DB::queryFirstRow("SELECT id FROM users WHERE email=%s AND id != %s", $_POST["email"], $_POST["userid"]);
+        $existingaccount = DB::queryFirstRow("SELECT id FROM users WHERE email=%s AND id != %s", $_POST["email"], $_POST["userid"]); // Checking for existing accounts under same email address.
 
         if(!empty($existingaccount))
         {
-          echo "email";
+          echo "email"; // Returns 'email', stating that email is already in use.
           exit;
           return;
         }
@@ -59,22 +59,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
       }
     }
 
-    if(IS_ADVISOR or $session["user"]["id"] == $_POST["userid"])
+    if(IS_ADVISOR or $session["user"]["id"] == $_POST["userid"]) // Limiting these functions to advisors and the local user only.
     {
       if($_POST["type"] == "StuInf")
       {
         if(empty($_POST["student_fullname"]) or empty($_POST["student_email"]))
         {
-          echo "empty";
+          echo "empty"; // Returns 'empty', stating that a required field is left empty.
           exit;
           return;
         }
 
-        $existingaccount = DB::queryFirstRow("SELECT id FROM users WHERE email=%s AND id != %s", $_POST["student_email"], $_POST["userid"]);
+        $existingaccount = DB::queryFirstRow("SELECT id FROM users WHERE email=%s AND id != %s", $_POST["student_email"], $_POST["userid"]); // Checking for existing accounts under same email address.
 
         if(!empty($existingaccount))
         {
-          echo "email";
+          echo "email"; // Returns 'email', stating that email is already in use.
           exit;
           return;
         }
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
           "prev_english" => $_POST["student_english"]
         ), "id=%s", $_POST["userid"]);
 
-        echo "ok";
+        echo "ok"; // Returns 'ok', stating that everything went fine.
         exit;
         return;
       }
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
           "father_mobile" => $_POST["father_mobile"]
         ), "id=%s", $_POST["userid"]);
 
-        echo "ok";
+        echo "ok"; // Returns 'ok', stating that everything went fine.
         exit;
         return;
       }

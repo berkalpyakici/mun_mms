@@ -5,6 +5,7 @@ $localapplications = DB::query("SELECT * FROM applications WHERE conference=%s A
 
 $advisors = DB::query("SELECT * FROM users WHERE class=0");
 
+
 if(empty($localmaster["id"])) {
   $localempty = true;
 }
@@ -15,6 +16,7 @@ $usrapplied = false;
 foreach($localapplications as $data) {
   if($data["applicant"] == $session["user"]["id"]) {
     $usrapplied = true;
+    $usrapplication = $data;
   }
 }
 
@@ -31,6 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             "time_applied" => microtime(true)
           ));
         }
+
+        echo "ok";
+        exit;
+        return;
+      }
+
+      if($_POST["type"] == "selectAdvisor")
+      {
+        if(!$usrapplication["advisor_locked"]) {
+          DB::update("applications", array(
+            "advisor" => $_POST["advisor"]
+          ), "conference=%s AND applicant=%s AND removed=0", $localid, $_SESSION["userid"]);
+        }
+
+        // EMAIL SCRIPT HERE NOTIFYING BOTH OLD AND NEW ADVISOR
 
         echo "ok";
         exit;

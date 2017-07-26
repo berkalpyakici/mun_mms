@@ -1,5 +1,5 @@
 <?
-function gradefromclass($class)
+function gradefromclass($class) // This function calculates the grade the student is in from their graduating class.
 {
   if(CURTERM == ($class-1)."-".$class)
   {
@@ -27,7 +27,7 @@ function gradefromclass($class)
   }
 }
 
-function getgradelist()
+function getgradelist() // This class returns the list of classes.
 {
   $gradclass["12"] = GRADCLASS;
   $gradclass["11"] = GRADCLASS+1;

@@ -1,7 +1,7 @@
 <?
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    if(IS_ADVISOR)
+    if(IS_ADVISOR) // Limiting these functions to advisors only.
     {
       DB::insert("conferences", array(
         "name" => $_POST["name"],
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         "independent" => $_POST["applicationtype"]
       ));
 
-      echo "ok";
+      echo "ok"; // Returns 'ok', stating that everything went fine.
       exit;
       return;
     }
