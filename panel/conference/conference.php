@@ -39,8 +39,11 @@
       <? if(!IS_ADVISOR) { ?>
       <div class="alert alert-success text-left">
         <? if($usrapplied) { ?>
-        <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#reviewApp"> Review Application</button>
-        You have applied this conference.<br><small>Please review your application to meet admission criteria and deadlines.</small>
+          <form id="removeApp" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
+            <input type="hidden" name="type" value="removeApp" />
+            <button type="submit" class="btn btn-danger pull-right">Remove Application</button>
+            You have applied this conference.<br><small>Please review your application to meet admission criteria and deadlines.</small>
+          </form>
         <? } elseif($mmssettings["maxinapp"] > $numapplied) { ?>
         <form id="applyConf" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
           <input type="hidden" name="type" value="applyConf" />
@@ -89,6 +92,51 @@
             <li class="list-group-item">Deadline for Application: <? if(!empty($localmaster['date_app'])) { echo $localmaster['date_app']; } else { echo '<span class="text-danger">No Date Set</span>'; } ?></li>
             <li class="list-group-item">Deadline for Document Submission: <? if(!empty($localmaster['date_docs'])) { echo $localmaster['date_docs']; } else { echo '<span class="text-danger">No Date Set</span>'; } ?></li>
             <li class="list-group-item">Deadline for Recommendations: <? if(!empty($localmaster['date_reco'])) { echo $localmaster['date_reco']; } else { echo '<span class="text-danger">No Date Set</span>'; } ?></li>
+          </ul>
+        </div>
+        <? } ?>
+
+        <? if($usrapplied) { ?>
+        <div class="panel panel-primary">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Your Application Status</div>
+          <div class="panel-body">
+            We have received your application. Please follow the deadlines given above and make sure every item on the list bellow is done.
+          </div>
+
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="badge"><i class="fa fa-check" aria-hidden="true"></i> Verified</span>
+              Internal Application
+              <br><small>Application Received</small>
+            </li>
+
+            <li class="list-group-item">
+              <span class="badge"><i class="fa fa-times" aria-hidden="true"></i> Pending</span>
+              Legal Documents
+              <br><small>Download the form bellow, fill it, and submit to your MUN advisor.</small>
+              <br><small><a href="../uploads/documents/independent_conference_permission.docx">Download the Form</a></small>
+            </li>
+
+            <li class="list-group-item">
+              <span class="badge"><i class="fa fa-times" aria-hidden="true"></i> Pending</span>
+              Optional: Recommendation Letter
+              <br><small>If this conference requires a recommendation letter, select an advisor.</small>
+              <br><br>
+              <form class="row">
+                <div class="form-group col-sm-10">
+                  <select class="form-control">
+                    <option value="0">N/A</option>
+                    <? foreach($advisors as $data) { ?>
+                    <option value="<?= $data['id'] ?>"><?= $data['fullname'] ?></option>
+                    <? } ?>
+                  </select>
+                </div>
+                <div class="form-group col-sm-2 text-right">
+                  <button type="submit" class="btn btn-primary">Save & Notify Adv.</button>
+                </div>
+              </form>
+            </li>
           </ul>
         </div>
         <? } ?>
@@ -167,52 +215,6 @@
       </div>
       </form>
       <? } ?>
-
-      <div class="modal fade" id="reviewApp" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Review Your Application</h4>
-            </div>
-            <div class="modal-body">
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <span class="badge"><i class="fa fa-check" aria-hidden="true"></i> Verified</span>
-                  Internal Application
-                  <br><small>Application Received</small>
-                </li>
-
-                <li class="list-group-item">
-                  <span class="badge"><i class="fa fa-times" aria-hidden="true"></i> Pending</span>
-                  Legal Documents
-                  <br><small>Intependent Conference Permission Form is Pending</small>
-                  <br><small><a href="">Download the Form</a></small>
-                </li>
-
-                <li class="list-group-item">
-                  <span class="badge"><i class="fa fa-times" aria-hidden="true"></i> Pending</span>
-                  Optional: Recommendation Letter
-                  <br><small>If this conference requires a recommendation letter, select an advisor.</small>
-                  <br>
-                  <select class="form-control">
-                    <option>N/A</option>
-                    <option>Candan Yavuz</option>
-                  </select>
-                </li>
-              </ul>
-            </div>
-            <div class="modal-footer">
-              <form id="removeApp" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
-                <input type="hidden" name="type" value="removeApp" />
-                <button type="submit" class="btn btn-danger">Remove Application</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <? } ?>
 
       <? include(PATH_PRIVATE."page/footer.php"); ?>

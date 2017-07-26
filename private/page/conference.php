@@ -3,6 +3,8 @@ $localid = $_GET["id"];
 $localmaster = DB::queryFirstRow("SELECT * FROM conferences WHERE id=%s AND removed=0",$localid);
 $localapplications = DB::query("SELECT * FROM applications WHERE conference=%s AND removed=0",$localid);
 
+$advisors = DB::query("SELECT * FROM users WHERE class=0");
+
 if(empty($localmaster["id"])) {
   $localempty = true;
 }
