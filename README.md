@@ -13,4 +13,5 @@ Model United Nations, also known as Model UN or MUN, is an educational simulatio
 Note: cPanel (WHM) is recommended.
 
 ## Copyleft
-This project uses MeekroDB (https://github.com/SergeyTsalkov/meekrodb) under GPL-3.0 license.
+This project uses [MeekroDB](https://github.com/SergeyTsalkov/meekrodb) under GPL-3.0 license.
+This project uses [PHPMailer](https://github.com/PHPMailer/PHPMailer) under LGPL-2.1 license.
