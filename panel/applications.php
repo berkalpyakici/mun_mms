@@ -36,7 +36,7 @@
               <th>Conferece</th>
               <th>Applicant</th>
               <th>Applied On</th>
-              <th>Status</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
@@ -46,9 +46,7 @@
               <td><a href="member/<?= $data["applicant"]['id'] ?>"><?= $data["applicant"]['fullname'] ?></a></td>
               <td><?= date("d.m.Y H:i:s",$data["time_applied"]) ?></td>
               <td>
-                <? if(!$data['formreceived']) { ?>
-                  Legal Documents Pending
-                <? } ?>
+                <a href="application/<?= $data['id'] ?>">View</a>
               </td>
             <? } ?>
           </tbody>
