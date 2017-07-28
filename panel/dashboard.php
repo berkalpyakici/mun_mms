@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                   <h3><i class="fa fa-calendar" aria-hidden="true"></i></h3>
-                  <h4>Upcoming Conf.</h4>
+                  <h4>Conferences</h4>
                   <hr>
                   <h3><?= count($conferences); ?></h3>
                 </div>
@@ -96,7 +96,7 @@
 
       <div class="row">
         <div class="col-xs-12 col-md-6">
-          <h3>Upcoming Conferences</h3>
+          <h3>Last Added Conferences</h3>
 
           <div class="panel panel-default">
             <div class="panel-body">

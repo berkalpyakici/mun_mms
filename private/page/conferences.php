@@ -1,6 +1,6 @@
 <?
 $localid = $_GET["id"];
-$locallist = DB::query("SELECT * FROM conferences WHERE 'time' > %s AND removed=0 ORDER BY 'time' DESC",microtime(true)); // Retrieves conference list.
+$locallist = DB::query("SELECT * FROM conferences WHERE removed=0 ORDER BY id DESC",microtime(true)); // Retrieves conference list.
 
 if(empty($locallist)) {
   $localempty = true; // Sets variable true if no result is found in DB.
