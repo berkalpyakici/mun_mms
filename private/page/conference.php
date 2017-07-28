@@ -3,7 +3,7 @@ $localid = $_GET["id"];
 $localmaster = DB::queryFirstRow("SELECT * FROM conferences WHERE id=%s AND removed=0",$localid);
 $localapplications = DB::query("SELECT * FROM applications WHERE conference=%s AND removed=0",$localid);
 
-$advisors = DB::query("SELECT * FROM users WHERE class=0");
+$advisors = DB::query("SELECT * FROM users WHERE type='advisor'");
 
 
 if(empty($localmaster["id"])) {
@@ -26,12 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
       if($_POST["type"] == "applyConf")
       {
-        if($mmssettings["maxinapp"] > $numapplied) {
+        if($mmssettings["maxinapp"] > $numapplied and (strtotime($localmaster['date_app']) > microtime(true) or empty($localmaster['date_app']))) {
           DB::insert("applications", array(
             "conference" => $localid,
             "applicant" => $_SESSION["userid"],
             "time_applied" => microtime(true)
           ));
+
+          if($numapplied + 1 == $mmssettings['maxinapp']) {
+            foreach($advisors as $data) {
+              if($data['email'] == 'berkalp.y@gmail.com') { // REMOVETHIS
+                sendemail('Conference Application Update', 'The conference '.$localmaster['name'].' has received '.$mmssettings['maxinapp'].' applications, and the application form is now closed for other club members. If you wish to change this conference to a dependent one, please do so by logging into your MMS account and visiting the conference\'s settings.', 'The conference '.$localmaster['name'].' has received '.$mmssettings['maxinapp'].' applications', $data['email'], $data['fullname']);
+              }
+            }
+          }
         }
 
         echo "ok";
@@ -47,7 +55,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
           ), "conference=%s AND applicant=%s AND removed=0", $localid, $_SESSION["userid"]);
         }
 
-        // EMAIL SCRIPT HERE NOTIFYING BOTH OLD AND NEW ADVISOR
+        if($usrapplication['advisor'] != $_POST['advisor']) {
+          if(!empty($usrapplication['advisor'])) {
+            $newadvisor = DB::queryFirstRow("SELECT * FROM users WHERE id=%s AND removed=0",$_POST['advisor']);
+            $oldadvisor = DB::queryFirstRow("SELECT * FROM users WHERE id=%s AND removed=0",$usrapplication['advisor']);
+
+            if(!empty($newadvisor)) {
+              sendemail('Recommendation Request Update', 'Club member '.$session["user"]['fullname'].' requests a recommendation letter for the conference '.$localmaster['name'].' from you. Sign into your MMS account to get further information.', 'Club member '.$session["user"]['fullname'].' requests a recommendation letter.', $newadvisor['email'], $newadvisor['fullname']);
+            }
+
+            if(!empty($oldadvisor)) {
+              sendemail('Recommendation Request Update', 'Club member '.$session["user"]['fullname'].' NO LONGER requests a recommendation letter for the conference '.$localmaster['name'].' from you. Sign into your MMS account to get further information.', 'Club member '.$session["user"]['fullname'].' NO LONGER requests a recommendation letter.', $oldadvisor['email'], $oldadvisor['fullname']);
+            }
+
+          } else {
+            $newadvisor = DB::queryFirstRow("SELECT * FROM users WHERE id=%s AND removed=0",$_POST['advisor']);
+
+            if(!empty($newadvisor)) {
+              sendemail('Recommendation Request Update', 'Club member '.$session["user"]['fullname'].' requests a recommendation letter for the conference '.$localmaster['name'].' from you. Sign into your MMS account to get further information.', 'Club member '.$session["user"]['fullname'].' requests a recommendation letter.', $newadvisor['email'], $newadvisor['fullname']);
+            }
+          }
+        }
 
         echo "ok";
         exit;

@@ -5,7 +5,7 @@ function sendemail($subject, $body, $altbody, $address, $name) {
 
   $mail = new PHPMailer;
 
-  $mail->SMTPDebug = 2;
+  //$mail->SMTPDebug = 2;
 
   $mail->isSMTP();                                      // Set mailer to use SMTP
   $mail->Host = $config['smtp']['host'];  // Specify main and backup SMTP servers
@@ -13,6 +13,7 @@ function sendemail($subject, $body, $altbody, $address, $name) {
   $mail->Username = $config['smtp']['user'];                 // SMTP username
   $mail->Password = $config['smtp']['pass'];                           // SMTP password
   $mail->Port = $config['smtp']['port'];                                    // TCP port to connect to
+  $mail->SMTPSecure = $config['smtp']['encryption'];                            // Enable TLS encryption, `ssl` also accepted
 
   $mail->setFrom($config['smtp']['from'], $config['smtp']['from_name']);
   $mail->addAddress($address, $name);
@@ -29,5 +30,3 @@ function sendemail($subject, $body, $altbody, $address, $name) {
       return 'ok';
   }
 }
-
-echo sendemail('Test', 'This is a test.', 'This is a test.', 'berkalp.y@gmail.com', 'Berk Alp');
