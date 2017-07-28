@@ -44,14 +44,16 @@
             <button type="submit" class="btn btn-danger pull-right">Remove Application</button>
             You have applied this conference.<br><small>Please review your application to meet admission criteria and deadlines.</small>
           </form>
-        <? } elseif($mmssettings["maxinapp"] > $numapplied) { ?>
+        <? } elseif($mmssettings["maxinapp"] > $numapplied and (strtotime($localmaster['date_app']) > microtime(true) or empty($localmaster['date_app']))) { ?>
         <form id="applyConf" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
           <input type="hidden" name="type" value="applyConf" />
           <button type="submit" id="applyConfButton" class="btn btn-success pull-right">Apply Now</button>
         </form>
         <strong><?= $numapplied ?>/<?= $mmssettings["maxinapp"] ?></strong> member(s) applied this conference.<br><small>Apply to receive recommendation letter from your MUN advisor.</small>
-        <? } else { ?>
+        <? } elseif(strtotime($localmaster['date_app']) > microtime(true) or empty($localmaster['date_app'])) { ?>
         <strong><?= $numapplied ?>/<?= $mmssettings["maxinapp"] ?></strong> member(s) applied this conference.<br><small>You cannot apply to this conference since the maximum number of applicants is reached.</small>
+        <? } else { ?>
+        <strong><?= $numapplied ?>/<?= $mmssettings["maxinapp"] ?></strong> member(s) applied this conference.<br><small>You cannot apply to this conference since the application deadline has passed.</small>
         <? } ?>
       </div>
       <? } ?>
@@ -265,7 +267,7 @@ $(document).ready(function() {
           location.reload();
         }
         else {
-          swal("Something went wrong!", "Please try again later.", "error");
+          swal("Something went wrong!", "Please try again later. Error: "+data, "error");
         }
     });
 
