@@ -114,16 +114,27 @@
             </li>
 
             <li class="list-group-item">
+              <? if(empty($usrapplication['documents'])) { ?>
               <span class="badge"><i class="fa fa-times" aria-hidden="true"></i> Pending</span>
+              <? } else { ?>
+              <span class="badge"><i class="fa fa-check" aria-hidden="true"></i> Verified</span>
+              <? } ?>
               Legal Documents
               <br><small>Download the form bellow, fill it, and submit to your MUN advisor.</small>
               <br><small><a href="../uploads/documents/independent_conference_permission.docx">Download the Form</a></small>
             </li>
 
             <li class="list-group-item">
+              <? if(empty($usrapplication['recommendation'])) { ?>
               <span class="badge"><i class="fa fa-times" aria-hidden="true"></i> Pending</span>
+              <? } else { ?>
+              <span class="badge"><i class="fa fa-check" aria-hidden="true"></i> Verified</span>
+              <? } ?>
               Optional: Recommendation Letter
               <br><small>If this conference requires a recommendation letter, select an advisor.</small>
+              <? if(!empty($usrapplication['recommendation'])) { ?>
+              <br><small><a href="../uploads/recommendations/<?= $usrapplication['recommendation'] ?>">Click Here to Download</a></small>
+              <? } ?>
               <br><br>
               <form id="selectAdvisor" class="row" action="conference.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
                 <input type="hidden" name="type" value="selectAdvisor" />

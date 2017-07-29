@@ -45,44 +45,113 @@
           <div class="col-md-4 col-xs-6">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title">Advisor for Recommendation</h3>
+                <h3 class="panel-title">Advisor for Recommendation <br><small><? if(empty($localmaster['advisor'])) { echo 'Leave empty if not needed.'; } elseif(!empty($localmaster['advisor_locked'])) { echo 'Assigned by an advisor.'; } else { echo 'Picked by the applicant.'; } ?></small></h3>
               </div>
               <div class="panel-body">
-                N/A
+                <? if(empty($localadvisor)) { echo 'N/A'; } else { echo $localadvisor['fullname']; } ?>
               </div>
               <div class="panel-footer">
-                <button class='btn btn-sm btn-primary'>Edit / Update</button>
+                <button class='btn btn-sm btn-primary' data-toggle="modal" data-target="#advisorModal">Change Advisor</button>
               </div>
             </div>
           </div>
 
-          <div class="col-md-4 col-xs-6">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title">Recommendation</h3>
-              </div>
-              <div class="panel-body">
-                Not Submitted
-              </div>
-              <div class="panel-footer">
-                <button class='btn btn-sm btn-primary'>Edit / Update</button>
+          <form id="selectAdvisor" action="application.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
+            <div class="modal fade" id="advisorModal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Select an Advisor for Recommendation</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="type" value="selectAdvisor" />
+                    <select class="form-control" name="advisor">
+                      <option value="0">N/A</option>
+                      <? foreach($advisors as $data) { ?>
+                      <option value="<?= $data['id'] ?>" <? if($localmaster['advisor'] == $data['id']) { echo 'selected'; }?>><?= $data['fullname'] ?></option>
+                      <? } ?>
+                    </select>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save & Notify Advisor</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
 
           <div class="col-md-4 col-xs-6">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title">Documents</h3>
+                <h3 class="panel-title">Recommendation <br><small>Deadline: <? if(!empty($localconference['date_reco'])) { echo $localconference['date_reco']; } else { echo 'No Date Set'; } ?></small></h3>
               </div>
               <div class="panel-body">
-                Not Received
+                <? if(empty($localmaster['recommendation'])) { echo 'Submission Pending'; } else { echo '<a href="../uploads/recommendations/'.$localmaster['recommendation'].'">Click Here to Download</a>'; } ?>
               </div>
               <div class="panel-footer">
-                <button class='btn btn-sm btn-primary'>Edit / Update</button>
+                <button class='btn btn-sm btn-primary' data-toggle="modal" data-target="#recoModal">Upload / Update Recommendation</button>
               </div>
             </div>
           </div>
+
+          <form id="uploadReco" action="application.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
+            <div class="modal fade" id="recoModal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Upload or Change Recommendation</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="type" value="uploadReco" />
+                    <input type="file" name="reco">
+                    <label>Only .docx format is allowed, maximum 120 KB.</label>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload / Change Recommendation</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="col-md-4 col-xs-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">Documents <br><small>Deadline: <? if(!empty($localconference['date_docs'])) { echo $localconference['date_docs']; } else { echo 'No Date Set'; } ?></small></h3>
+              </div>
+              <div class="panel-body">
+                <? if(!$localmaster['documents']) { echo 'Not Received'; } else { echo 'Received'; } ?>
+              </div>
+              <div class="panel-footer">
+                <button class='btn btn-sm btn-primary' data-toggle="modal" data-target="#statusModal">Update Status / Mark as Done</button>
+              </div>
+            </div>
+          </div>
+
+          <form id="statusUpdate" action="application.php?id=<?= $localid ?>" method="post" accept-charset="UTF-8">
+            <div class="modal fade" id="statusModal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Update Status or Mark as Done</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="type" value="updateStatus" />
+                    <input type="checkbox" <? if($localmaster['documents']) { echo 'checked'; }?>> Mark Permission form as Submitted
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload / Change Recommendation</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
 
@@ -105,9 +174,36 @@
 $(document).ready(function() {
     // bind 'myForm' and provide a simple callback function
 
-    $('#removeApp').ajaxForm(function(data) {
+    $('#selectAdvisor').ajaxForm(function(data) {
         if(data == "ok") {
           location.reload();
+        }
+        else {
+          swal("Something went wrong!", "Please try again later.", "error");
+        }
+    });
+
+    $('#statusUpdate').ajaxForm(function(data) {
+        if(data == "ok") {
+          location.reload();
+        }
+        else {
+          swal("Something went wrong!", "Please try again later.", "error");
+        }
+    });
+
+    $('#uploadReco').ajaxForm(function(data) {
+        if(data == "ok") {
+          location.reload();
+        }
+        else if(data == "empty") {
+          swal("Something went wrong!", "Please select a file to upload.", "error");
+        }
+        else if(data == "filesize") {
+          swal("Something went wrong!", "The file file should be less than 120 KB.", "error");
+        }
+        else if(data == "filetype") {
+          swal("Something went wrong!", "The file can only be in .docx format.", "error");
         }
         else {
           swal("Something went wrong!", "Please try again later.", "error");
