@@ -28,6 +28,7 @@ $config['smtp']['user'] = '';
 $config['smtp']['pass'] = '';
 $config['smtp']['host'] = '';
 $config['smtp']['port'] = 25;
+$config['smtp']['encryption'] = 'tls';
 $config['smtp']['from'] = '';
 $config['smtp']['from_name'] = '';
 ```
