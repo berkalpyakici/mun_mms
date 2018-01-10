@@ -35,9 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
           if($numapplied + 1 == $mmssettings['maxinapp']) {
             foreach($advisors as $data) {
-              if($data['email'] == 'berkalp.y@gmail.com') { // REMOVETHIS
-                sendemail('Conference Application Update', 'The conference '.$localmaster['name'].' has received '.$mmssettings['maxinapp'].' applications, and the application form is now closed for other club members. If you wish to change this conference to a dependent one, please do so by logging into your MMS account and visiting the conference\'s settings.', 'The conference '.$localmaster['name'].' has received '.$mmssettings['maxinapp'].' applications', $data['email'], $data['fullname']);
-              }
+              sendemail('Conference Application Update', 'The conference '.$localmaster['name'].' has received '.$mmssettings['maxinapp'].' applications, and the application form is now closed for other club members. If you wish to change this conference to a dependent one, please do so by logging into your MMS account and visiting the conference\'s settings.', 'The conference '.$localmaster['name'].' has received '.$mmssettings['maxinapp'].' applications', $data['email'], $data['fullname']);
             }
           }
         }
